@@ -1,16 +1,20 @@
 import { useParams } from '@remix-run/react';
-import { ClientOnly } from 'remix-utils';
-import type { LinksFunction } from '@remix-run/server-runtime';
-import Kalido from '~/components/Kalido';
-import stylesUrl from '~/styles/kalido.css';
-
-export const links: LinksFunction = () => {
-  return [{ rel: 'stylesheet', href: stylesUrl }];
-};
+import { kalidoGen } from '~/lib/kalidoGen';
+import CellElement from '~/components/CellElement';
+import { useCellSize } from '~/lib/useCellSize';
 
 export default function SeedRoute() {
   const { seed: seedParam } = useParams();
+  const cellSize = useCellSize();
   const seed = seedParam || '';
 
-  return <ClientOnly>{() => <Kalido seed={seed} />}</ClientOnly>;
+  const cells = kalidoGen(seed);
+
+  return (
+    <>
+      {cells.map((cell) => (
+        <CellElement key={`cell-${cell.id}`} data={cell} size={cellSize} />
+      ))}
+    </>
+  );
 }

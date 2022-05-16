@@ -1,5 +1,3 @@
-import { makeStyles } from '@material-ui/core/styles';
-
 import type { Cell } from '~/lib/kalidoGen';
 import type { FC } from 'react';
 
@@ -8,23 +6,19 @@ interface CellProps {
   size: number;
 }
 
-const useStyles = makeStyles(() => ({
-  cell: ({ data, size }: CellProps) => ({
-    border: 'solid 1px black',
-    width: size,
-    height: size,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontSize: 10,
-    backgroundColor: data.segment !== null ? 'yellow' : '',
-  }),
-}));
-
-const CellElement: FC<CellProps> = (props) => {
-  const { data } = props;
-  const classes = useStyles({ ...props });
-  return <div className={classes.cell}>{data.id}</div>;
+const CellElement: FC<CellProps> = ({ data, size }) => {
+  return (
+    <div
+      className="cell"
+      style={{
+        width: size,
+        height: size,
+        backgroundColor: data.segment !== null ? 'yellow' : '',
+      }}
+    >
+      {data.id}
+    </div>
+  );
 };
 
 export default CellElement;

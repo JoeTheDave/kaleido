@@ -11,7 +11,6 @@ type LoaderData = {
 
 export const loader: LoaderFunction = async ({ request }) => {
   const randomSeed = uuid();
-  console.log(randomSeed);
   return {
     seed: randomSeed,
   };
