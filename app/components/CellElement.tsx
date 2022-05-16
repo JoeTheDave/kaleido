@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
 const CellElement: FC<CellProps> = (props) => {
   const { data } = props;
   const classes = useStyles({ ...props });
-  return <div className={classes.cell}>{data.id}</div>;
+  return <div className={classes.cell}>{data.centerOffset}</div>;
 };
 
 export default CellElement;
