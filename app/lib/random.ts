@@ -1,6 +1,6 @@
 import gen from 'random-seed';
 
-export class RandomService {
+export class Random {
   generator: any;
 
   constructor(seed: string) {

@@ -12,6 +12,8 @@
     "start": "cross-env NODE_ENV=production node ./server.js"
   },
   "dependencies": {
+    "@material-ui/core": "^4.12.4",
+    "@react-hook/window-size": "^3.0.7",
     "@remix-run/express": "^1.4.3",
     "@remix-run/node": "^1.4.3",
     "@remix-run/react": "^1.4.3",

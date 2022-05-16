@@ -22,7 +22,7 @@ export default function Index() {
   const { seed } = useLoaderData<LoaderData>();
 
   useEffect(() => {
-    navigate(`/seed/${seed}`);
+    navigate(`/${seed}`);
   }, []);
 
   return <></>;
