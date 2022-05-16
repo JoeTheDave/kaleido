@@ -10,6 +10,7 @@ export class Cell {
   south: Cell | null;
   west: Cell | null;
   centerOffset: number;
+  segment: number | null;
 
   constructor(x: number, y: number, id: number) {
     this.id = id;
@@ -20,10 +21,11 @@ export class Cell {
     this.south = null;
     this.west = null;
     this.centerOffset = 0;
+    this.segment = null;
   }
 }
 
-export const kalidoGen = memoize(
+export const kalidoGen = // memoize(
   (gridWidth: number, gridHeight: number, seed: string) => {
     console.log('Generating kalido data...');
     const rand = new Random(seed);
@@ -50,6 +52,8 @@ export const kalidoGen = memoize(
       );
     });
 
+    cells[rand.range(1, gridWidth * gridHeight - 1)].segment = 1;
+
     return cells;
-  },
-);
+  };
+// );

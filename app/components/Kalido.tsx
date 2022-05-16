@@ -11,8 +11,8 @@ interface KalidoProps {
 }
 
 const Kalido: FC<KalidoProps> = ({ seed }) => {
-  const gridWidth = 50;
-  const gridHeight = 50;
+  const gridWidth = 10;
+  const gridHeight = 10;
 
   const [width, height] = useWindowSize();
 

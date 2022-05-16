@@ -2,7 +2,7 @@ import { useParams } from '@remix-run/react';
 import { ClientOnly } from 'remix-utils';
 import type { LinksFunction } from '@remix-run/server-runtime';
 import Kalido from '~/components/Kalido';
-import stylesUrl from '~/styles/Kalido.css';
+import stylesUrl from '~/styles/kalido.css';
 
 export const links: LinksFunction = () => {
   return [{ rel: 'stylesheet', href: stylesUrl }];

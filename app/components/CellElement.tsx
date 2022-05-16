@@ -17,13 +17,14 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
     alignItems: 'center',
     fontSize: 10,
+    backgroundColor: data.segment !== null ? 'yellow' : '',
   }),
 }));
 
 const CellElement: FC<CellProps> = (props) => {
   const { data } = props;
   const classes = useStyles({ ...props });
-  return <div className={classes.cell}>{data.centerOffset}</div>;
+  return <div className={classes.cell}>{data.id}</div>;
 };
 
 export default CellElement;
