@@ -38,11 +38,3 @@ body,
   padding-top: 50px;
   padding-left: 50px;
 }
-
-.cell {
-  border: solid 1px black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 10px;
-}

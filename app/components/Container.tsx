@@ -1,7 +1,7 @@
 import { IconButton } from '@material-ui/core';
 import { Refresh } from '@material-ui/icons';
 import { useNavigate } from '@remix-run/react';
-import { gridWidth } from '~/lib/kalidoGen';
+import { gridSize } from '~/lib/kalidoGen';
 import { useCellSize } from '~/lib/useCellSize';
 
 import type { FC } from 'react';
@@ -19,7 +19,7 @@ const Container: FC<ContainerProps> = ({ children }) => {
           <Refresh />
         </IconButton>
       </div>
-      <div className="container" style={{ width: gridWidth * cellSize }}>
+      <div className="container" style={{ width: gridSize * cellSize }}>
         {children}
       </div>
     </div>

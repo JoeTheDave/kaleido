@@ -10,4 +10,8 @@ export class Random {
   range(min: number, max: number) {
     return this.generator(max - min + 1) + min;
   }
+
+  randomSelection<T>(list: T[]) {
+    return list[this.range(0, list.length - 1)];
+  }
 }
