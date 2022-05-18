@@ -2,6 +2,8 @@
 
 Random generation of radially symmetric designs. Uses psudo random number generation so a given seed may be used to reproduce the same design.
 
+![alt text](https://github.com/JoeTheDave/kaleido/blob/master/example.png)
+
 ## Local Setup
 
 ```sh
