@@ -1,6 +1,6 @@
 import colors from '~/lib/colors';
 
-import type { Cell } from '~/lib/kalidoGen';
+import type { Cell } from '~/lib/kaleidoGen';
 import type { FC } from 'react';
 
 interface CellProps {

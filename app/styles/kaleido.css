@@ -1,0 +1,104 @@
+html,
+body,
+#app {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-grow: 0;
+}
+
+.hover-zone {
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  transition: 0.5s;
+  background-color: rgba(50, 50, 50, 0.2);
+}
+.hover-zone:hover {
+  padding-top: 50px;
+  padding-left: 50px;
+  width: 150px;
+  border-radius: 5px;
+  background-color: rgba(50, 50, 50, 0.1);
+}
+
+.logo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-family: 'Permanent Marker', cursive;
+  font-size: 36px;
+  margin: 5px 20px;
+  pointer-events: none;
+}
+
+.modal-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(50, 50, 50, 0.75);
+  transition: 0.5s;
+  backdrop-filter: blur(20px);
+  visibility: hidden;
+  opacity: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-container.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+.modal {
+  width: 600px;
+  background-color: white;
+  border: solid 3px #333;
+  border-radius: 10px;
+  padding: 40px;
+}
+
+.modal-header {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.modal-settings-header {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 24px;
+  margin: 40px 0px 10px 0px;
+}
+
+.selected {
+  background-color: red;
+}
+
+.modal-button-row {
+  margin-top: 40px;
+  display: flex;
+  justify-content: flex-end;
+}

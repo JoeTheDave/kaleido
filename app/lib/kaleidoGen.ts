@@ -1,11 +1,11 @@
 import { memoize } from 'lodash';
 import { Random } from '~/lib/random';
 
-export const gridSize = 100;
+// export const gridSize = 20;
 const startSizeRadiusCoefficient = 0.25;
 const minSegmentLengthCoefficient = 0.25;
 const maxSegmentLengthCoefficient = 0.5;
-const friendlySelectionCoefficient = 0.8;
+const friendlySelectionCoefficient = 1;
 export class Cell {
   id: number;
   x: number;
@@ -39,28 +39,33 @@ export class Cell {
 export class Grid {
   cells: Cell[];
   rand: Random;
+  gridSize: number;
 
-  constructor(seed: string) {
+  constructor(seed: string, size: number) {
     this.rand = new Random(seed);
+    this.gridSize = size;
     this.cells = [];
-    for (let y = 1; y <= gridSize; y++) {
-      for (let x = 1; x <= gridSize; x++) {
-        this.cells.push(new Cell(x, y, x + (y - 1) * gridSize));
+    for (let y = 1; y <= this.gridSize; y++) {
+      for (let x = 1; x <= this.gridSize; x++) {
+        this.cells.push(new Cell(x, y, x + (y - 1) * this.gridSize));
       }
     }
     this.cells.forEach((cell) => {
       cell.north =
-        cell.id <= gridSize ? null : this.cells[cell.id - gridSize - 1];
-      cell.east = cell.id % gridSize === 0 ? null : this.cells[cell.id];
-      cell.south =
-        cell.id > gridSize * (gridSize - 1)
+        cell.id <= this.gridSize
           ? null
-          : this.cells[cell.id + gridSize - 1];
-      cell.west = cell.id % gridSize === 1 ? null : this.cells[cell.id - 2];
+          : this.cells[cell.id - this.gridSize - 1];
+      cell.east = cell.id % this.gridSize === 0 ? null : this.cells[cell.id];
+      cell.south =
+        cell.id > this.gridSize * (this.gridSize - 1)
+          ? null
+          : this.cells[cell.id + this.gridSize - 1];
+      cell.west =
+        cell.id % this.gridSize === 1 ? null : this.cells[cell.id - 2];
       cell.centerOffset = Math.floor(
         Math.sqrt(
-          Math.pow(cell.x - gridSize / 2 - 0.5, 2) +
-            Math.pow(cell.y - gridSize / 2 - 0.5, 2),
+          Math.pow(cell.x - this.gridSize / 2 - 0.5, 2) +
+            Math.pow(cell.y - this.gridSize / 2 - 0.5, 2),
         ),
       );
     });
@@ -69,9 +74,9 @@ export class Grid {
   getStartCells() {
     return this.cells.filter(
       (cell) =>
-        cell.x <= gridSize / 2 && // In upper left quadrant
-        cell.y <= gridSize / 2 &&
-        cell.centerOffset < gridSize * startSizeRadiusCoefficient && // Within the radius
+        cell.x <= this.gridSize / 2 && // In upper left quadrant
+        cell.y <= this.gridSize / 2 &&
+        cell.centerOffset < this.gridSize * startSizeRadiusCoefficient && // Within the radius
         cell.north && // Not on the border
         cell.east &&
         cell.south &&
@@ -95,7 +100,7 @@ export class Grid {
   getNextRadialSelection(cell: Cell) {
     return this.cells.find(
       (nextCell) =>
-        nextCell.y === cell.x && nextCell.x === gridSize - cell.y + 1,
+        nextCell.y === cell.x && nextCell.x === this.gridSize - cell.y + 1,
     ) as Cell;
   }
 
@@ -136,12 +141,12 @@ export class Grid {
 
   getRandomSegmentLength() {
     return this.rand.range(
-      Math.ceil(gridSize * minSegmentLengthCoefficient),
-      Math.ceil(gridSize * maxSegmentLengthCoefficient),
+      Math.ceil(this.gridSize * minSegmentLengthCoefficient),
+      Math.ceil(this.gridSize * maxSegmentLengthCoefficient),
     );
   }
 
-  kalido() {
+  kaleido() {
     let segmentIteration = 0;
     let selection: Cell | null = null;
 
@@ -180,9 +185,11 @@ export class Grid {
   }
 }
 
-export const kalidoGen = memoize((seed: string) => {
-  console.log('Generating kalido data...');
-  const grid = new Grid(seed);
-  grid.kalido();
-  return grid.cells;
-});
+export const kaleidoGen = // memoize(
+  (seed: string, size: number) => {
+    console.log('Generating kalido data...');
+    const grid = new Grid(seed, size);
+    grid.kaleido();
+    return grid.cells;
+  };
+//);
