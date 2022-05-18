@@ -1,5 +1,7 @@
 # Kaleido
 
+Random generation of radially symetric designs. Uses psudo random number generation so a given seed may be used to reproduce the same design.
+
 ## Local Setup
 
 ```sh
