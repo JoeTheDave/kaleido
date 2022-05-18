@@ -18,8 +18,6 @@ const Container: FC<ContainerProps> = ({ children }) => {
 
   const gridSize = queryStringNavigator.getSizeValue();
 
-  //
-
   return (
     <div className="root">
       <div className="hover-zone">
