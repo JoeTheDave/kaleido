@@ -23,6 +23,12 @@ body,
   display: flex;
   flex-wrap: wrap;
   flex-grow: 0;
+  /* animation: spin 144s linear infinite; */
+}
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .hover-zone {

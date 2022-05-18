@@ -3,8 +3,8 @@ import { Random } from '~/lib/random';
 
 // export const gridSize = 20;
 const startSizeRadiusCoefficient = 0.4;
-const minSegmentLengthCoefficient = 0.2;
-const maxSegmentLengthCoefficient = 0.3;
+const minSegmentLengthCoefficient = 0.15;
+const maxSegmentLengthCoefficient = 0.25;
 const friendlySelectionCoefficient = 1;
 export class Cell {
   id: number;

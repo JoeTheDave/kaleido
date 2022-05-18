@@ -23,3 +23,6 @@ npm run dev
 - [ ] Add config control for radius coefficient
 - [ ] Add config control for segment length coefficient range
 - [ ] Alter config controls so they don't take effect until an Apply button is pushed.
+- [ ] Make designs transition as the seed is changed
+- [ ] Build a script that will take guid and scrape the associated palette from https://coolors.co/palettes/trending and add it to the colors.ts file.
+- [ ] Add support for any number of colors in a palette. kaleidoGen should not revert to 0, and when drawing the data to screen CellElement will use modulus operator to loop back around to the beginnning of the palette whenever it passes the end of the palette length.
