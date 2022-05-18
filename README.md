@@ -8,11 +8,19 @@ Random generation of radially symmetric designs. Uses psudo random number genera
 
 ```sh
 npm install
+npm run dev
+
+// runs at http://localhost:3005
 ```
 
 ## TODO
 
 - [ ] Bug: When using settings button to change size, borders reside from previous size configuration. UGLY
-- [ ] Bug: When clicking the randomize seed button, it resets the size setting to the default setting of 40.
-- [ ] Populate more color palettes and include config options to switch between them.
 - [ ] Bug: Memoization around the kaleidoGen function was removed because it hindered re-render after settings change.
+- [ ] Bug: Default size 40 should not have a querystring param
+- [ ] Bug: Remove out 1px border
+
+- [ ] Populate more color palettes and include config options to switch between them.
+- [ ] Add config control for radius coefficient
+- [ ] Add config control for segment length coefficient range
+- [ ] Alter config controls so they don't take effect until an Apply button is pushed.

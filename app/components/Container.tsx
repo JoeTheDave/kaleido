@@ -8,27 +8,7 @@ import { useQueryStringNavigator } from '~/lib/useQueryStringNavigator';
 
 import type { FC } from 'react';
 
-interface SizeSettingsButtonProps {
-  size: number;
-}
-
 interface ContainerProps {}
-
-const SizeSettingsButton: FC<SizeSettingsButtonProps> = ({ size }) => {
-  const queryStringNavigator = useQueryStringNavigator();
-
-  const selectedSize = queryStringNavigator.getSizeValue();
-
-  return (
-    <Button
-      onClick={() => queryStringNavigator.setValue('size', `${size}`)}
-      variant={selectedSize === size ? 'contained' : 'outlined'}
-      color={selectedSize === size ? 'primary' : 'default'}
-    >
-      {size}
-    </Button>
-  );
-};
 
 const Container: FC<ContainerProps> = ({ children }) => {
   const navigate = useNavigate();
@@ -38,10 +18,15 @@ const Container: FC<ContainerProps> = ({ children }) => {
 
   const gridSize = queryStringNavigator.getSizeValue();
 
+  //
+
   return (
     <div className="root">
       <div className="hover-zone">
-        <IconButton size="medium" onClick={() => navigate('/')}>
+        <IconButton
+          size="medium"
+          onClick={() => navigate(`/${location.search}`)}
+        >
           <Refresh />
         </IconButton>
         <IconButton size="medium" onClick={() => setShowModal(true)}>
@@ -58,13 +43,16 @@ const Container: FC<ContainerProps> = ({ children }) => {
           <div className="modal-settings-header">Size</div>
 
           <ButtonGroup variant="outlined">
-            <SizeSettingsButton size={20} />
-            <SizeSettingsButton size={40} />
-            <SizeSettingsButton size={60} />
-            <SizeSettingsButton size={80} />
-            <SizeSettingsButton size={100} />
-            <SizeSettingsButton size={150} />
-            <SizeSettingsButton size={200} />
+            {[20, 40, 60, 80, 100, 150, 200].map((size) => (
+              <Button
+                key={`size-button-${size}`}
+                onClick={() => queryStringNavigator.setValue('size', `${size}`)}
+                variant={gridSize === size ? 'contained' : 'outlined'}
+                color={gridSize === size ? 'primary' : 'default'}
+              >
+                {size}
+              </Button>
+            ))}
           </ButtonGroup>
 
           <div className="modal-button-row">

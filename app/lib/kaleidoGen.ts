@@ -2,9 +2,9 @@ import { memoize } from 'lodash';
 import { Random } from '~/lib/random';
 
 // export const gridSize = 20;
-const startSizeRadiusCoefficient = 0.25;
-const minSegmentLengthCoefficient = 0.25;
-const maxSegmentLengthCoefficient = 0.5;
+const startSizeRadiusCoefficient = 0.4;
+const minSegmentLengthCoefficient = 0.2;
+const maxSegmentLengthCoefficient = 0.3;
 const friendlySelectionCoefficient = 1;
 export class Cell {
   id: number;
@@ -181,7 +181,7 @@ export class Grid {
         segmentIteration = 0;
       }
       selection = null;
-    } while (this.getStartCells().length); // TODO: while more vacant cells exist
+    } while (this.getStartCells().length);
   }
 }
 

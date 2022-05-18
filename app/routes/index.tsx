@@ -9,7 +9,9 @@ type LoaderData = {
   seed: string;
 };
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async () => {
+  // For some reason, spinning up a uuid on the client is resulting in a maximum call stack exceeded error.
+  // Creating it on the server inside this loader function solves the problem.
   const randomSeed = uuid();
   return {
     seed: randomSeed,
@@ -21,7 +23,7 @@ export default function Index() {
   const { seed } = useLoaderData<LoaderData>();
 
   useEffect(() => {
-    navigate(`/${seed}`);
+    navigate(`/${seed}${location.search}`);
   }, []);
 
   return <></>;
