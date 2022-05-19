@@ -10,7 +10,7 @@ export default function SeedRoute() {
   const queryStringNavigator = useQueryStringNavigator();
   const seed = seedParam || '';
 
-  const size = parseInt(queryStringNavigator.getValue('size') || '40');
+  const size = queryStringNavigator.getSizeValue();
 
   const cells = kaleidoGen(seed, size);
 

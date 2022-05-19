@@ -1,6 +1,6 @@
 # Kaleido
 
-Random generation of radially symmetric designs. Uses psudo random number generation so a given seed may be used to reproduce the same design.
+Random generation of radially symmetric designs. Uses pseudo random number generation so a given seed may be used to reproduce the same design.
 
 ![alt text](https://github.com/JoeTheDave/kaleido/blob/master/example.png)
 
@@ -17,7 +17,7 @@ npm run dev
 
 - [ ] Bug: When using settings button to change size, borders reside from previous size configuration. UGLY
 - [ ] Bug: Memoization around the kaleidoGen function was removed because it hindered re-render after settings change.
-- [ ] Bug: Default size 40 should not have a querystring param
+- [ ] Bug: Friendly selection doesn't seem to be working correctly
 
 - [ ] Populate more color palettes and include config options to switch between them.
 - [ ] Add config control for radius coefficient

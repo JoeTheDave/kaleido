@@ -44,7 +44,7 @@ const Container: FC<ContainerProps> = ({ children }) => {
             {[20, 40, 60, 80, 100, 150, 200].map((size) => (
               <Button
                 key={`size-button-${size}`}
-                onClick={() => queryStringNavigator.setValue('size', `${size}`)}
+                onClick={() => queryStringNavigator.setSizeValue(`${size}`)}
                 variant={gridSize === size ? 'contained' : 'outlined'}
                 color={gridSize === size ? 'primary' : 'default'}
               >
