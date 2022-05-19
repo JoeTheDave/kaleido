@@ -15,7 +15,6 @@ npm run dev
 
 ## TODO
 
-- [ ] Bug: When using settings button to change size, borders reside from previous size configuration. UGLY
 - [ ] Bug: Memoization around the kaleidoGen function was removed because it hindered re-render after settings change.
 - [ ] Bug: Friendly selection doesn't seem to be working correctly
 

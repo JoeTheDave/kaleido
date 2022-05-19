@@ -18,14 +18,15 @@ const CellElement: FC<CellProps> = ({ data, size }) => {
     color: 'white',
     width: size,
     height: size,
-    border: 'solid 1px white',
     backgroundColor: data.segment !== null ? colors[0][data.segment] : '',
 
     borderTop:
       data.north !== null
         ? `solid ${borderWidth}px ${
             data.north && data.north.segment === data.segment
-              ? colors[0][data.segment as number]
+              ? data.segment !== null
+                ? colors[0][data.segment]
+                : ''
               : 'black'
           }`
         : 'solid 2px #F6F6F6',
@@ -33,7 +34,9 @@ const CellElement: FC<CellProps> = ({ data, size }) => {
       data.east !== null
         ? `solid ${borderWidth}px ${
             data.east && data.east.segment === data.segment
-              ? colors[0][data.segment as number]
+              ? data.segment !== null
+                ? colors[0][data.segment]
+                : ''
               : 'black'
           }`
         : 'solid 2px #F6F6F6',
@@ -41,7 +44,9 @@ const CellElement: FC<CellProps> = ({ data, size }) => {
       data.south !== null
         ? `solid ${borderWidth}px ${
             data.south && data.south.segment === data.segment
-              ? colors[0][data.segment as number]
+              ? data.segment !== null
+                ? colors[0][data.segment]
+                : ''
               : 'black'
           }`
         : 'solid 2px #F6F6F6',
@@ -49,7 +54,9 @@ const CellElement: FC<CellProps> = ({ data, size }) => {
       data.west !== null
         ? `solid ${borderWidth}px ${
             data.west && data.west.segment === data.segment
-              ? colors[0][data.segment as number]
+              ? data.segment !== null
+                ? colors[0][data.segment]
+                : ''
               : 'black'
           }`
         : 'solid 2px #F6F6F6',
