@@ -1,10 +1,6 @@
 import { memoize, flatten } from 'lodash';
 import { Random } from '~/lib/random';
 
-// export const gridSize = 20;
-const startSizeRadiusCoefficient = 0.4;
-const minSegmentLengthCoefficient = 0.25;
-const maxSegmentLengthCoefficient = 0.4;
 const friendlySelectionCoefficient = 0.75;
 export class Cell {
   id: number;
@@ -50,10 +46,19 @@ export class Grid {
   cells: Cell[];
   rand: Random;
   gridSize: number;
+  radiusCoefficient: number;
+  segmentLengthRange: number[];
 
-  constructor(seed: string, size: number) {
+  constructor(
+    seed: string,
+    size: number,
+    radiusCoefficient: number,
+    segmentLengthRange: number[],
+  ) {
     this.rand = new Random(seed);
     this.gridSize = size;
+    this.radiusCoefficient = radiusCoefficient;
+    this.segmentLengthRange = segmentLengthRange;
     this.cells = [];
     for (let y = 1; y <= this.gridSize; y++) {
       for (let x = 1; x <= this.gridSize; x++) {
@@ -86,7 +91,7 @@ export class Grid {
       (cell) =>
         cell.x <= this.gridSize / 2 && // In upper left quadrant
         cell.y <= this.gridSize / 2 &&
-        cell.centerOffset < this.gridSize * startSizeRadiusCoefficient && // Within the radius
+        cell.centerOffset < this.gridSize * this.radiusCoefficient && // Within the radius
         cell.north && // Not on the border
         cell.east &&
         cell.south &&
@@ -151,8 +156,8 @@ export class Grid {
 
   getRandomSegmentLength() {
     return this.rand.range(
-      Math.ceil(this.gridSize * minSegmentLengthCoefficient),
-      Math.ceil(this.gridSize * maxSegmentLengthCoefficient),
+      Math.ceil(this.gridSize * this.segmentLengthRange[0]),
+      Math.ceil(this.gridSize * this.segmentLengthRange[1]),
     );
   }
 
@@ -193,9 +198,14 @@ export class Grid {
 }
 
 export const kaleidoGen = // memoize(
-  (seed: string, size: number) => {
+  (
+    seed: string,
+    size: number,
+    radiusCoefficient: number,
+    segmentLengthRange: number[],
+  ) => {
     console.log('Generating kalido data...');
-    const grid = new Grid(seed, size);
+    const grid = new Grid(seed, size, radiusCoefficient, segmentLengthRange);
     grid.kaleido();
     return grid.cells;
   };

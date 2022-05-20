@@ -14,8 +14,11 @@ export default function SeedRoute() {
   const size = queryStringNavigator.getSizeValue();
   const paletteIndex = queryStringNavigator.getPaletteValue();
   const colorPalette = colors[paletteIndex];
+  const radiusCoefficient = queryStringNavigator.getRadiusCoefficientValue();
+  const segmentLengthRange =
+    queryStringNavigator.getSegmentLengthCoefficientRangeValue();
 
-  const cells = kaleidoGen(seed, size);
+  const cells = kaleidoGen(seed, size, radiusCoefficient, segmentLengthRange);
 
   return (
     <>

@@ -52,12 +52,39 @@ export const useQueryStringNavigator = () => {
     try {
       return parseInt(getValue('palette') || '0');
     } catch {
-      return 40;
+      return 0;
     }
   };
 
   const setPaletteValue = (val: number) => {
     setValue('palette', val === 0 ? '' : val.toString());
+  };
+
+  const getRadiusCoefficientValue = () => {
+    try {
+      return parseFloat(getValue('radius') || '0.4');
+    } catch {
+      return 0.4;
+    }
+  };
+
+  const setRadiusCoefficientValue = (val: number) => {
+    setValue('radius', val === 0.4 ? '' : val.toString());
+  };
+
+  const getSegmentLengthCoefficientRangeValue = () => {
+    try {
+      return (getValue('seg-length') || '0.25|0.4')
+        .split('|')
+        .map((v) => parseFloat(v));
+    } catch {
+      return [0.25, 0.4];
+    }
+  };
+
+  const setSegmentLengthCoefficientRangeValue = (val: number[]) => {
+    const queryVal = `${val[0]}|${val[1]}`;
+    setValue('seg-length', queryVal === '0.25|0.4' ? '' : queryVal);
   };
 
   return {
@@ -69,5 +96,9 @@ export const useQueryStringNavigator = () => {
     setSizeValue,
     getPaletteValue,
     setPaletteValue,
+    getRadiusCoefficientValue,
+    setRadiusCoefficientValue,
+    getSegmentLengthCoefficientRangeValue,
+    setSegmentLengthCoefficientRangeValue,
   };
 };

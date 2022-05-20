@@ -17,8 +17,6 @@ npm run dev
 
 - [ ] Bug: Memoization around the kaleidoGen function was removed because it hindered re-render after settings change.
 
-- [ ] Add config control for radius coefficient
-- [ ] Add config control for segment length coefficient range
 - [ ] Alter config controls so they don't take effect until an Apply button is pushed.
 - [ ] Make designs transition as the seed is changed
 - [ ] Host on a public domain and supply link to README file
