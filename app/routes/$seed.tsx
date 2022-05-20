@@ -3,6 +3,7 @@ import { kaleidoGen } from '~/lib/kaleidoGen';
 import CellElement from '~/components/CellElement';
 import { useCellSize } from '~/lib/useCellSize';
 import { useQueryStringNavigator } from '~/lib/useQueryStringNavigator';
+import colors from '~/lib/colors';
 
 export default function SeedRoute() {
   const { seed: seedParam } = useParams();
@@ -11,13 +12,20 @@ export default function SeedRoute() {
   const seed = seedParam || '';
 
   const size = queryStringNavigator.getSizeValue();
+  const paletteIndex = queryStringNavigator.getPaletteValue();
+  const colorPalette = colors[paletteIndex];
 
   const cells = kaleidoGen(seed, size);
 
   return (
     <>
       {cells.map((cell) => (
-        <CellElement key={`cell-${cell.id}`} data={cell} size={cellSize} />
+        <CellElement
+          key={`cell-${cell.id}`}
+          data={cell}
+          size={cellSize}
+          palette={colorPalette}
+        />
       ))}
     </>
   );

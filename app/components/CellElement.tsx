@@ -1,11 +1,10 @@
-import colors from '~/lib/colors';
-
 import type { Cell } from '~/lib/kaleidoGen';
 import type { FC } from 'react';
 
-interface CellProps {
+interface CellElementProps {
   data: Cell;
   size: number;
+  palette: string[];
 }
 
 const borderWidth = 2;
@@ -32,8 +31,7 @@ const determineBorderColor = (
   return '#F6F6F6';
 };
 
-const CellElement: FC<CellProps> = ({ data, size }) => {
-  const palette = colors[0];
+const CellElement: FC<CellElementProps> = ({ data, size, palette }) => {
   const cellStyle = {
     display: 'flex',
     justifyContent: 'center',

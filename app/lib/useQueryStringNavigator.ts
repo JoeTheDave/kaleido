@@ -44,8 +44,20 @@ export const useQueryStringNavigator = () => {
     }
   };
 
-  const setSizeValue = (val: string) => {
-    setValue('size', val === '40' ? '' : val);
+  const setSizeValue = (val: number) => {
+    setValue('size', val === 40 ? '' : val.toString());
+  };
+
+  const getPaletteValue = () => {
+    try {
+      return parseInt(getValue('palette') || '0');
+    } catch {
+      return 40;
+    }
+  };
+
+  const setPaletteValue = (val: number) => {
+    setValue('palette', val === 0 ? '' : val.toString());
   };
 
   return {
@@ -55,5 +67,7 @@ export const useQueryStringNavigator = () => {
     toggleValue,
     getSizeValue,
     setSizeValue,
+    getPaletteValue,
+    setPaletteValue,
   };
 };
