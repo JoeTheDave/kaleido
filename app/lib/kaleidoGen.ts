@@ -1,11 +1,11 @@
-import { memoize } from 'lodash';
+import { memoize, flatten } from 'lodash';
 import { Random } from '~/lib/random';
 
 // export const gridSize = 20;
 const startSizeRadiusCoefficient = 0.4;
-const minSegmentLengthCoefficient = 0.15;
-const maxSegmentLengthCoefficient = 0.25;
-const friendlySelectionCoefficient = 1;
+const minSegmentLengthCoefficient = 0.25;
+const maxSegmentLengthCoefficient = 0.4;
+const friendlySelectionCoefficient = 0.75;
 export class Cell {
   id: number;
   x: number;
@@ -31,8 +31,18 @@ export class Cell {
     this.iteration = null;
   }
 
-  getNeighbors() {
-    return [this.north, this.east, this.south, this.west];
+  getNeighbors(withCorners: boolean = false) {
+    const neighbors = [this.north, this.east, this.south, this.west];
+    if (withCorners) {
+      const cornerNeighbors = [
+        this.north?.east,
+        this.east?.south,
+        this.south?.west,
+        this.west?.north,
+      ];
+      return flatten([neighbors, cornerNeighbors]) as (Cell | null)[];
+    }
+    return neighbors;
   }
 }
 
@@ -125,7 +135,7 @@ export class Grid {
       ) as Cell[];
     const friendlyOptions = options.filter((celloption) =>
       celloption
-        .getNeighbors()
+        .getNeighbors(true)
         .some((n) => n?.segment !== null && n?.segment !== cell.segment),
     );
     if (
@@ -177,9 +187,6 @@ export class Grid {
         }
       } while (selection);
       segmentIteration++;
-      if (segmentIteration === 5) {
-        segmentIteration = 0;
-      }
       selection = null;
     } while (this.getStartCells().length);
   }

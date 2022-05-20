@@ -8,58 +8,64 @@ interface CellProps {
   size: number;
 }
 
-const borderWidth = 1;
+const borderWidth = 2;
+
+const determineBorderColor = (
+  cell: Cell,
+  compCell: Cell | null,
+  palette: string[],
+) => {
+  if (compCell !== null) {
+    if (cell.segment === null && compCell.segment === null) {
+      return '#FFFFFF';
+    } else if (cell.segment === null || compCell.segment === null) {
+      return '#000000';
+    } else if (
+      (cell.segment || 0) % palette.length ===
+      (compCell.segment || 0) % palette.length
+    ) {
+      return palette[(cell.segment as number) % palette.length];
+    } else {
+      return '#000000';
+    }
+  }
+  return '#F6F6F6';
+};
 
 const CellElement: FC<CellProps> = ({ data, size }) => {
+  const palette = colors[0];
   const cellStyle = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    color: 'white',
+    color: 'black',
     width: size,
     height: size,
-    backgroundColor: data.segment !== null ? colors[0][data.segment] : '',
+    backgroundColor:
+      data.segment === null
+        ? '#FFFFFF'
+        : palette[data.segment % palette.length],
 
-    borderTop:
-      data.north !== null
-        ? `solid ${borderWidth}px ${
-            data.north && data.north.segment === data.segment
-              ? data.segment !== null
-                ? colors[0][data.segment]
-                : ''
-              : 'black'
-          }`
-        : 'solid 2px #F6F6F6',
-    borderRight:
-      data.east !== null
-        ? `solid ${borderWidth}px ${
-            data.east && data.east.segment === data.segment
-              ? data.segment !== null
-                ? colors[0][data.segment]
-                : ''
-              : 'black'
-          }`
-        : 'solid 2px #F6F6F6',
-    borderBottom:
-      data.south !== null
-        ? `solid ${borderWidth}px ${
-            data.south && data.south.segment === data.segment
-              ? data.segment !== null
-                ? colors[0][data.segment]
-                : ''
-              : 'black'
-          }`
-        : 'solid 2px #F6F6F6',
-    borderLeft:
-      data.west !== null
-        ? `solid ${borderWidth}px ${
-            data.west && data.west.segment === data.segment
-              ? data.segment !== null
-                ? colors[0][data.segment]
-                : ''
-              : 'black'
-          }`
-        : 'solid 2px #F6F6F6',
+    borderTop: `solid ${borderWidth}px ${determineBorderColor(
+      data,
+      data.north,
+      palette,
+    )}`,
+    borderRight: `solid ${borderWidth}px ${determineBorderColor(
+      data,
+      data.east,
+      palette,
+    )}`,
+    borderBottom: `solid ${borderWidth}px ${determineBorderColor(
+      data,
+      data.south,
+      palette,
+    )}`,
+    borderLeft: `solid ${borderWidth}px ${determineBorderColor(
+      data,
+      data.west,
+      palette,
+    )}`,
   };
 
   return <div className="cell" style={cellStyle}></div>;
