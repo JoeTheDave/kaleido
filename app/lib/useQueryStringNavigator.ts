@@ -7,33 +7,12 @@ export const useQueryStringNavigator = () => {
     return (searchParams.get(term) || '').toLowerCase();
   };
 
-  const getValues = (term: string) => {
-    const value = getValue(term);
-    return value ? value.split('|') : [];
-  };
-
-  const setValue = (term: string, value: string) => {
+  const setParam = (term: string, value: string) => {
     if (value) {
       searchParams.set(term, value);
     } else {
       searchParams.delete(term);
     }
-    setSearchParams(searchParams);
-  };
-
-  const toggleValue = (term: string, value: string) => {
-    const values = getValues(term);
-    const newValue = (
-      values.includes(value)
-        ? values.filter((v) => v !== value)
-        : [...values, value]
-    ).join('|');
-    if (newValue) {
-      searchParams.set(term, newValue);
-    } else {
-      searchParams.delete(term);
-    }
-    setSearchParams(searchParams);
   };
 
   const getSizeValue = () => {
@@ -44,10 +23,6 @@ export const useQueryStringNavigator = () => {
     }
   };
 
-  const setSizeValue = (val: number) => {
-    setValue('size', val === 40 ? '' : val.toString());
-  };
-
   const getPaletteValue = () => {
     try {
       return parseInt(getValue('palette') || '0');
@@ -56,25 +31,17 @@ export const useQueryStringNavigator = () => {
     }
   };
 
-  const setPaletteValue = (val: number) => {
-    setValue('palette', val === 0 ? '' : val.toString());
-  };
-
   const getRadiusCoefficientValue = () => {
     try {
-      return parseFloat(getValue('radius') || '0.4');
+      return parseFloat(getValue('radius') || '0.35');
     } catch {
       return 0.4;
     }
   };
 
-  const setRadiusCoefficientValue = (val: number) => {
-    setValue('radius', val === 0.4 ? '' : val.toString());
-  };
-
   const getSegmentLengthCoefficientRangeValue = () => {
     try {
-      return (getValue('seg-length') || '0.25|0.4')
+      return (getValue('seg-length') || '0.25|0.5')
         .split('|')
         .map((v) => parseFloat(v));
     } catch {
@@ -82,23 +49,32 @@ export const useQueryStringNavigator = () => {
     }
   };
 
-  const setSegmentLengthCoefficientRangeValue = (val: number[]) => {
-    const queryVal = `${val[0]}|${val[1]}`;
-    setValue('seg-length', queryVal === '0.25|0.4' ? '' : queryVal);
+  interface SetConfigValuesInput {
+    size: number;
+    palette: number;
+    radius: number;
+    segmentLength: number[];
+  }
+
+  const setConfigValues = ({
+    size,
+    palette,
+    radius,
+    segmentLength,
+  }: SetConfigValuesInput) => {
+    const segLength = `${segmentLength[0]}|${segmentLength[1]}`;
+    setParam('size', size === 40 ? '' : size.toString());
+    setParam('palette', palette === 0 ? '' : palette.toString());
+    setParam('radius', radius === 0.35 ? '' : radius.toString());
+    setParam('seg-length', segLength === '0.25|0.5' ? '' : segLength);
+    setSearchParams(searchParams);
   };
 
   return {
-    getValue,
-    getValues,
-    setValue,
-    toggleValue,
     getSizeValue,
-    setSizeValue,
     getPaletteValue,
-    setPaletteValue,
     getRadiusCoefficientValue,
-    setRadiusCoefficientValue,
     getSegmentLengthCoefficientRangeValue,
-    setSegmentLengthCoefficientRangeValue,
+    setConfigValues,
   };
 };

@@ -15,13 +15,18 @@ const Container: FC<ContainerProps> = ({ children }) => {
   const navigate = useNavigate();
   const cellSize = useCellSize();
   const queryStringNavigator = useQueryStringNavigator();
-  const [showModal, setShowModal] = useState<boolean>(false);
-
   const gridSize = queryStringNavigator.getSizeValue();
-  const paletteIndex = queryStringNavigator.getPaletteValue();
-  const radiusCoefficient = queryStringNavigator.getRadiusCoefficientValue();
-  const segmentLengthRange =
-    queryStringNavigator.getSegmentLengthCoefficientRangeValue();
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [kaleidoSize, setKaleidoSize] = useState<number>(gridSize);
+  const [paletteIndex, setPaletteIndex] = useState<number>(
+    queryStringNavigator.getPaletteValue(),
+  );
+  const [radiusCoefficient, setRadiusCoefficient] = useState<number>(
+    queryStringNavigator.getRadiusCoefficientValue(),
+  );
+  const [segmentLengthRange, setSegmentLengthRange] = useState<number[]>(
+    queryStringNavigator.getSegmentLengthCoefficientRangeValue(),
+  );
 
   return (
     <div className="root">
@@ -48,9 +53,9 @@ const Container: FC<ContainerProps> = ({ children }) => {
             {[20, 40, 60, 80, 100, 150, 200].map((size) => (
               <Button
                 key={`size-button-${size}`}
-                onClick={() => queryStringNavigator.setSizeValue(size)}
-                variant={gridSize === size ? 'contained' : 'outlined'}
-                color={gridSize === size ? 'primary' : 'default'}
+                onClick={() => setKaleidoSize(size)}
+                variant={kaleidoSize === size ? 'contained' : 'outlined'}
+                color={kaleidoSize === size ? 'primary' : 'default'}
               >
                 {size}
               </Button>
@@ -62,7 +67,7 @@ const Container: FC<ContainerProps> = ({ children }) => {
               <Button
                 key={`palette-${p}`}
                 size="large"
-                onClick={() => queryStringNavigator.setPaletteValue(p)}
+                onClick={() => setPaletteIndex(p)}
               >
                 <div
                   className={cc({
@@ -91,7 +96,7 @@ const Container: FC<ContainerProps> = ({ children }) => {
             max={0.7}
             onChange={(e, val) => {
               const radius = val as number;
-              queryStringNavigator.setRadiusCoefficientValue(radius);
+              setRadiusCoefficient(radius);
             }}
           />
           <div className="modal-settings-header">
@@ -102,20 +107,34 @@ const Container: FC<ContainerProps> = ({ children }) => {
             valueLabelDisplay="auto"
             step={0.05}
             marks
-            min={0.1}
-            max={0.7}
+            min={0.05}
+            max={1.25}
             onChange={(e, val) => {
               const range = val as number[];
-              queryStringNavigator.setSegmentLengthCoefficientRangeValue(range);
+              setSegmentLengthRange(range);
             }}
           />
           <div className="modal-button-row">
             <Button
               variant="contained"
-              color="primary"
+              color="default"
               onClick={() => setShowModal(false)}
             >
               Close
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() =>
+                queryStringNavigator.setConfigValues({
+                  size: kaleidoSize,
+                  palette: paletteIndex,
+                  radius: radiusCoefficient,
+                  segmentLength: segmentLengthRange,
+                })
+              }
+            >
+              Apply
             </Button>
           </div>
         </div>
