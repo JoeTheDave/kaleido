@@ -1,4 +1,4 @@
-import { memoize, flatten } from 'lodash';
+import { flatten } from 'lodash';
 import { Random } from '~/lib/random';
 
 const friendlySelectionCoefficient = 0.75;
@@ -197,16 +197,27 @@ export class Grid {
   }
 }
 
-export const kaleidoGen = // memoize(
-  (
-    seed: string,
-    size: number,
-    radiusCoefficient: number,
-    segmentLengthRange: number[],
-  ) => {
+let kaleidoResult: Cell[] = [];
+let kaleidoKey: string = '';
+
+export const kaleidoGen = (
+  seed: string,
+  size: number,
+  radiusCoefficient: number,
+  segmentLengthRange: number[],
+) => {
+  const key = JSON.stringify({
+    seed,
+    size,
+    radiusCoefficient,
+    segmentLengthRange,
+  });
+  if (key !== kaleidoKey) {
     console.log('Generating kalido data...');
     const grid = new Grid(seed, size, radiusCoefficient, segmentLengthRange);
     grid.kaleido();
-    return grid.cells;
-  };
-//);
+    kaleidoResult = grid.cells;
+    kaleidoKey = key;
+  }
+  return kaleidoResult;
+};

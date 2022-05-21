@@ -15,9 +15,5 @@ npm run dev
 
 ## TODO
 
-- [ ] Bug: Memoization around the kaleidoGen function was removed because it hindered re-render after settings change.
-- [ ] Bug: Stupid MaterialUI ButtonRow has the buttons jumping slighly in their layout when different values are selected.
-
-- [ ] Maybe make the config menu less intrusive so you can see the changes better when you apply them?
 - [ ] Make designs transition as the seed is changed
 - [ ] Host on a public domain and supply link to README file
