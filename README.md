@@ -15,5 +15,4 @@ npm run dev
 
 ## TODO
 
-- [ ] Make designs transition as the seed is changed
 - [ ] Host on a public domain and supply link to README file

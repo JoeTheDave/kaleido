@@ -3,6 +3,7 @@ import { IconButton, Button, ButtonGroup, Slider } from '@material-ui/core';
 import { Refresh, Settings } from '@material-ui/icons';
 import { useNavigate } from '@remix-run/react';
 import cc from 'classcat';
+import { v4 as uuidv4 } from 'uuid';
 import { useCellSize } from '~/lib/useCellSize';
 import { useQueryStringNavigator } from '~/lib/useQueryStringNavigator';
 import colors from '~/lib/colors';
@@ -33,7 +34,7 @@ const Container: FC<ContainerProps> = ({ children }) => {
       <div className="hover-zone">
         <IconButton
           size="medium"
-          onClick={() => navigate(`/${location.search}`)}
+          onClick={() => navigate(`/${uuidv4()}/${location.search}`)}
         >
           <Refresh />
         </IconButton>
