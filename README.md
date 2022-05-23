@@ -18,4 +18,4 @@ npm run dev
 
 ## TODO
 
-- [ ] Borders are screwed up thick on live demo
+- [ ]

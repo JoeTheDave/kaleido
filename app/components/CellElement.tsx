@@ -7,7 +7,7 @@ interface CellElementProps {
   palette: string[];
 }
 
-const borderWidth = 2;
+const borderWidth = 1;
 
 const determineBorderColor = (
   cell: DataCell,
