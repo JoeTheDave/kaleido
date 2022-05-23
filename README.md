@@ -2,6 +2,9 @@
 
 Random generation of radially symmetric designs. Uses pseudo random number generation so a given seed may be used to reproduce the same design.
 
+Live Demo
+https://sage-kaleido.herokuapp.com/
+
 ![alt text](https://github.com/JoeTheDave/kaleido/blob/master/example.png)
 
 ## Local Setup
@@ -15,4 +18,4 @@ npm run dev
 
 ## TODO
 
-- [ ] Host on a public domain and supply link to README file
+- [ ] Borders are screwed up thick on live demo
