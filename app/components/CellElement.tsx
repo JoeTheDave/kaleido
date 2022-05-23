@@ -1,8 +1,8 @@
-import type { Cell } from '~/lib/kaleidoGen';
+import type { DataCell } from '~/lib/kaleidoGen';
 import type { FC } from 'react';
 
 interface CellElementProps {
-  data: Cell;
+  data: DataCell;
   size: number;
   palette: string[];
 }
@@ -10,25 +10,22 @@ interface CellElementProps {
 const borderWidth = 2;
 
 const determineBorderColor = (
-  cell: Cell,
-  compCell: Cell | null,
+  cell: DataCell,
+  compSegment: number | null,
   palette: string[],
 ) => {
-  if (compCell !== null) {
-    if (cell.segment === null && compCell.segment === null) {
-      return '#FFFFFF';
-    } else if (cell.segment === null || compCell.segment === null) {
-      return '#000000';
-    } else if (
-      (cell.segment || 0) % palette.length ===
-      (compCell.segment || 0) % palette.length
-    ) {
-      return palette[(cell.segment as number) % palette.length];
-    } else {
-      return '#000000';
-    }
+  if (cell.segment === null && compSegment === null) {
+    return '#FFFFFF';
+  } else if (cell.segment === null || compSegment === null) {
+    return '#000000';
+  } else if (
+    (cell.segment || 0) % palette.length ===
+    (compSegment || 0) % palette.length
+  ) {
+    return palette[(cell.segment as number) % palette.length];
+  } else {
+    return '#000000';
   }
-  return '#F6F6F6';
 };
 
 const CellElement: FC<CellElementProps> = ({ data, size, palette }) => {
@@ -46,22 +43,22 @@ const CellElement: FC<CellElementProps> = ({ data, size, palette }) => {
 
     borderTop: `solid ${borderWidth}px ${determineBorderColor(
       data,
-      data.north,
+      data.northSegment,
       palette,
     )}`,
     borderRight: `solid ${borderWidth}px ${determineBorderColor(
       data,
-      data.east,
+      data.eastSegment,
       palette,
     )}`,
     borderBottom: `solid ${borderWidth}px ${determineBorderColor(
       data,
-      data.south,
+      data.southSegment,
       palette,
     )}`,
     borderLeft: `solid ${borderWidth}px ${determineBorderColor(
       data,
-      data.west,
+      data.westSegment,
       palette,
     )}`,
   };

@@ -2,17 +2,17 @@ import { flatten } from 'lodash';
 import { Random } from '~/lib/random';
 
 const friendlySelectionCoefficient = 0.75;
-export class Cell {
+class SmartCell {
   id: number;
   x: number;
   y: number;
-  north: Cell | null;
-  east: Cell | null;
-  south: Cell | null;
-  west: Cell | null;
   centerOffset: number;
   segment: number | null;
   iteration: number | null;
+  north: SmartCell | null;
+  east: SmartCell | null;
+  south: SmartCell | null;
+  west: SmartCell | null;
 
   constructor(x: number, y: number, id: number) {
     this.id = id;
@@ -36,14 +36,40 @@ export class Cell {
         this.south?.west,
         this.west?.north,
       ];
-      return flatten([neighbors, cornerNeighbors]) as (Cell | null)[];
+      return flatten([neighbors, cornerNeighbors]) as (SmartCell | null)[];
     }
     return neighbors;
   }
 }
 
+export class DataCell {
+  id: number;
+  x: number;
+  y: number;
+  centerOffset: number;
+  segment: number | null;
+  iteration: number | null;
+  northSegment: number | null;
+  eastSegment: number | null;
+  southSegment: number | null;
+  westSegment: number | null;
+
+  constructor(cell: SmartCell) {
+    this.id = cell.id;
+    this.x = cell.x;
+    this.y = cell.y;
+    this.centerOffset = cell.centerOffset;
+    this.segment = cell.segment;
+    this.iteration = cell.iteration;
+    this.northSegment = cell.north === null ? null : cell.north.segment;
+    this.eastSegment = cell.east === null ? null : cell.east.segment;
+    this.southSegment = cell.south === null ? null : cell.south.segment;
+    this.westSegment = cell.west === null ? null : cell.west.segment;
+  }
+}
+
 export class Grid {
-  cells: Cell[];
+  cells: SmartCell[];
   rand: Random;
   gridSize: number;
   radiusCoefficient: number;
@@ -62,7 +88,7 @@ export class Grid {
     this.cells = [];
     for (let y = 1; y <= this.gridSize; y++) {
       for (let x = 1; x <= this.gridSize; x++) {
-        this.cells.push(new Cell(x, y, x + (y - 1) * this.gridSize));
+        this.cells.push(new SmartCell(x, y, x + (y - 1) * this.gridSize));
       }
     }
     this.cells.forEach((cell) => {
@@ -101,26 +127,26 @@ export class Grid {
   }
 
   getRandomStartSelection() {
-    return this.rand.randomSelection<Cell>(this.getStartCells());
+    return this.rand.randomSelection<SmartCell>(this.getStartCells());
   }
 
   getRandomConnectedSegmentStartSelection() {
-    return this.rand.randomSelection<Cell>(
+    return this.rand.randomSelection<SmartCell>(
       this.getStartCells().filter((cell) =>
         cell.getNeighbors().some((n) => n?.segment !== null),
       ),
     );
   }
 
-  getNextRadialSelection(cell: Cell) {
+  getNextRadialSelection(cell: SmartCell) {
     return this.cells.find(
       (nextCell) =>
         nextCell.y === cell.x && nextCell.x === this.gridSize - cell.y + 1,
-    ) as Cell;
+    ) as SmartCell;
   }
 
-  getEquivalentRadialSelectionSet(cell: Cell) {
-    const selection: Cell[] = [cell];
+  getEquivalentRadialSelectionSet(cell: SmartCell) {
+    const selection: SmartCell[] = [cell];
     do {
       selection.push(
         this.getNextRadialSelection(selection[selection.length - 1]),
@@ -129,15 +155,15 @@ export class Grid {
     return selection;
   }
 
-  getRandomUnsegmentedNeighbor(cell: Cell) {
-    const options: Cell[] = cell
+  getRandomUnsegmentedNeighbor(cell: SmartCell) {
+    const options: SmartCell[] = cell
       .getNeighbors()
       .filter(
         (cellOption) =>
           cellOption !== null &&
           cellOption.segment === null &&
           !cellOption.getNeighbors().some((n) => n === null),
-      ) as Cell[];
+      ) as SmartCell[];
     const friendlyOptions = options.filter((celloption) =>
       celloption
         .getNeighbors(true)
@@ -147,11 +173,11 @@ export class Grid {
       friendlyOptions.length &&
       this.rand.range(1, 100) / 100 < friendlySelectionCoefficient
     ) {
-      return this.rand.randomSelection<Cell>(friendlyOptions);
+      return this.rand.randomSelection<SmartCell>(friendlyOptions);
     }
     return options.length === 0
       ? null
-      : this.rand.randomSelection<Cell>(options);
+      : this.rand.randomSelection<SmartCell>(options);
   }
 
   getRandomSegmentLength() {
@@ -163,7 +189,7 @@ export class Grid {
 
   kaleido() {
     let segmentIteration = 0;
-    let selection: Cell | null = null;
+    let selection: SmartCell | null = null;
 
     do {
       let segmentLength = this.getRandomSegmentLength();
@@ -197,7 +223,7 @@ export class Grid {
   }
 }
 
-let kaleidoResult: Cell[] = [];
+let kaleidoResult: DataCell[] = [];
 let kaleidoKey: string = '';
 
 export const kaleidoGen = (
@@ -216,7 +242,7 @@ export const kaleidoGen = (
     console.log('Generating kalido data...');
     const grid = new Grid(seed, size, radiusCoefficient, segmentLengthRange);
     grid.kaleido();
-    kaleidoResult = grid.cells;
+    kaleidoResult = grid.cells.map((gridCell) => new DataCell(gridCell));
     kaleidoKey = key;
   }
   return kaleidoResult;

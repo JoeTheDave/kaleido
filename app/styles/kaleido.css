@@ -59,6 +59,10 @@ body,
   pointer-events: none;
 }
 
+.cell {
+  transition: 1s;
+}
+
 .modal-container {
   width: 100%;
   height: 100%;

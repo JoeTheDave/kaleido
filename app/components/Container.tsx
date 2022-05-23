@@ -125,14 +125,15 @@ const Container: FC<ContainerProps> = ({ children }) => {
             <Button
               variant="contained"
               color="primary"
-              onClick={() =>
+              onClick={() => {
+                setShowModal(false);
                 queryStringNavigator.setConfigValues({
                   size: kaleidoSize,
                   palette: paletteIndex,
                   radius: radiusCoefficient,
                   segmentLength: segmentLengthRange,
-                })
-              }
+                });
+              }}
             >
               Apply
             </Button>
