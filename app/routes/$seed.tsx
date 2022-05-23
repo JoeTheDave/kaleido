@@ -22,7 +22,15 @@ export const loader: LoaderFunction = async ({ params, request }) => {
   const segmentLengthRange = (url.searchParams.get('seg-length') || '0.25|0.5')
     .split('|')
     .map((v) => parseFloat(v));
-  const cells = kaleidoGen(seed, size, radiusCoefficient, segmentLengthRange);
+
+  const symmetry = url.searchParams.get('symmetry') || 'radial';
+  const cells = kaleidoGen(
+    seed,
+    size,
+    radiusCoefficient,
+    segmentLengthRange,
+    symmetry === 'radial',
+  );
   return {
     cells,
   };

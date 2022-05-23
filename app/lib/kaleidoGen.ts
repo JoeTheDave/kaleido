@@ -74,17 +74,20 @@ export class Grid {
   gridSize: number;
   radiusCoefficient: number;
   segmentLengthRange: number[];
+  radialSymmetry: boolean;
 
   constructor(
     seed: string,
     size: number,
     radiusCoefficient: number,
     segmentLengthRange: number[],
+    radialSymmetry: boolean,
   ) {
     this.rand = new Random(seed);
     this.gridSize = size;
     this.radiusCoefficient = radiusCoefficient;
     this.segmentLengthRange = segmentLengthRange;
+    this.radialSymmetry = radialSymmetry;
     this.cells = [];
     for (let y = 1; y <= this.gridSize; y++) {
       for (let x = 1; x <= this.gridSize; x++) {
@@ -145,6 +148,20 @@ export class Grid {
     ) as SmartCell;
   }
 
+  getHorizontalMirrorSelection(cell: SmartCell) {
+    return this.cells.find(
+      (mirrorCell) =>
+        mirrorCell.y === cell.y && mirrorCell.x === this.gridSize - cell.x + 1,
+    ) as SmartCell;
+  }
+
+  getVerticalMirrorSelection(cell: SmartCell) {
+    return this.cells.find(
+      (mirrorCell) =>
+        mirrorCell.x === cell.x && mirrorCell.y === this.gridSize - cell.y + 1,
+    ) as SmartCell;
+  }
+
   getEquivalentRadialSelectionSet(cell: SmartCell) {
     const selection: SmartCell[] = [cell];
     do {
@@ -152,6 +169,20 @@ export class Grid {
         this.getNextRadialSelection(selection[selection.length - 1]),
       );
     } while (selection.length < 4);
+    return selection;
+  }
+
+  getEquivalentMirrorSelectionSet(cell: SmartCell) {
+    const selection: SmartCell[] = [cell];
+    selection.push(
+      this.getHorizontalMirrorSelection(selection[selection.length - 1]),
+    );
+    selection.push(
+      this.getVerticalMirrorSelection(selection[selection.length - 1]),
+    );
+    selection.push(
+      this.getHorizontalMirrorSelection(selection[selection.length - 1]),
+    );
     return selection;
   }
 
@@ -209,7 +240,9 @@ export class Grid {
           }
         }
         if (selection) {
-          const selectionSet = this.getEquivalentRadialSelectionSet(selection);
+          const selectionSet = this.radialSymmetry
+            ? this.getEquivalentRadialSelectionSet(selection)
+            : this.getEquivalentMirrorSelectionSet(selection);
           selectionSet.forEach((cell) => {
             cell.segment = segmentIteration;
             cell.iteration = cellIteration;
@@ -231,16 +264,24 @@ export const kaleidoGen = (
   size: number,
   radiusCoefficient: number,
   segmentLengthRange: number[],
+  radialSymmetry: boolean,
 ) => {
   const key = JSON.stringify({
     seed,
     size,
     radiusCoefficient,
     segmentLengthRange,
+    radialSymmetry,
   });
   if (key !== kaleidoKey) {
     console.log('Generating kalido data...');
-    const grid = new Grid(seed, size, radiusCoefficient, segmentLengthRange);
+    const grid = new Grid(
+      seed,
+      size,
+      radiusCoefficient,
+      segmentLengthRange,
+      radialSymmetry,
+    );
     grid.kaleido();
     kaleidoResult = grid.cells.map((gridCell) => new DataCell(gridCell));
     kaleidoKey = key;

@@ -49,11 +49,16 @@ export const useQueryStringNavigator = () => {
     }
   };
 
+  const getSymmetryTypeValue = () => {
+    return (getValue('symmetry') || 'radial') as 'radial' | 'mirror';
+  };
+
   interface SetConfigValuesInput {
     size: number;
     palette: number;
     radius: number;
     segmentLength: number[];
+    symmetry: 'radial' | 'mirror';
   }
 
   const setConfigValues = ({
@@ -61,12 +66,14 @@ export const useQueryStringNavigator = () => {
     palette,
     radius,
     segmentLength,
+    symmetry,
   }: SetConfigValuesInput) => {
     const segLength = `${segmentLength[0]}|${segmentLength[1]}`;
     setParam('size', size === 40 ? '' : size.toString());
     setParam('palette', palette === 0 ? '' : palette.toString());
     setParam('radius', radius === 0.35 ? '' : radius.toString());
     setParam('seg-length', segLength === '0.25|0.5' ? '' : segLength);
+    setParam('symmetry', symmetry === 'radial' ? '' : symmetry);
     setSearchParams(searchParams);
   };
 
@@ -75,6 +82,7 @@ export const useQueryStringNavigator = () => {
     getPaletteValue,
     getRadiusCoefficientValue,
     getSegmentLengthCoefficientRangeValue,
+    getSymmetryTypeValue,
     setConfigValues,
   };
 };

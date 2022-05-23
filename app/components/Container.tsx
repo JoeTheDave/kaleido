@@ -1,5 +1,13 @@
 import { useState } from 'react';
-import { IconButton, Button, ButtonGroup, Slider } from '@material-ui/core';
+import {
+  Button,
+  ButtonGroup,
+  FormControlLabel,
+  IconButton,
+  Radio,
+  RadioGroup,
+  Slider,
+} from '@material-ui/core';
 import { Refresh, Settings } from '@material-ui/icons';
 import { useNavigate } from '@remix-run/react';
 import cc from 'classcat';
@@ -27,6 +35,9 @@ const Container: FC<ContainerProps> = ({ children }) => {
   );
   const [segmentLengthRange, setSegmentLengthRange] = useState<number[]>(
     queryStringNavigator.getSegmentLengthCoefficientRangeValue(),
+  );
+  const [symmetry, setSymmetry] = useState<'radial' | 'mirror'>(
+    queryStringNavigator.getSymmetryTypeValue(),
   );
 
   return (
@@ -115,6 +126,25 @@ const Container: FC<ContainerProps> = ({ children }) => {
               setSegmentLengthRange(range);
             }}
           />
+          <div className="modal-settings-header">symmetry</div>
+          <RadioGroup row name="symmetry-selection">
+            <FormControlLabel
+              value="radial"
+              control={
+                <Radio checked={symmetry === 'radial'} color="primary" />
+              }
+              label="Radial"
+              onClick={() => setSymmetry('radial')}
+            />
+            <FormControlLabel
+              value="mirror"
+              control={
+                <Radio checked={symmetry === 'mirror'} color="primary" />
+              }
+              label="Mirror"
+              onClick={() => setSymmetry('mirror')}
+            />
+          </RadioGroup>
           <div className="modal-button-row">
             <Button
               variant="contained"
@@ -133,6 +163,7 @@ const Container: FC<ContainerProps> = ({ children }) => {
                   palette: paletteIndex,
                   radius: radiusCoefficient,
                   segmentLength: segmentLengthRange,
+                  symmetry,
                 });
               }}
             >
