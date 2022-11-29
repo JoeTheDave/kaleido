@@ -15,7 +15,3 @@ npm run dev
 
 // runs at http://localhost:3005
 ```
-
-## TODO
-
-- [ ]
